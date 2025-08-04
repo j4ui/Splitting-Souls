@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "splitting-souls",
+  "version": "${version}",
+  "name": "Splitting Souls",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/splitting-souls/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "j4ui.dev.splittingSouls.client.SplittingSoulsDataGenerator"
+    ],
+    "client": [
+      "j4ui.dev.splittingSouls.client.SplittingSoulsClient"
+    ],
+    "main": [
+      "j4ui.dev.splittingSouls.SplittingSouls"
+    ]
+  },
+  "mixins": [
+    "splitting-souls.mixins.json",
+    {
+      "config": "splitting-souls.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
