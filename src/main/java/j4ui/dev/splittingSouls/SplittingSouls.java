@@ -1,14 +1,6 @@
 package j4ui.dev.splittingSouls;
 import net.fabricmc.api.ModInitializer;
 
-import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
-import net.minecraft.block.Blocks;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.entry.ItemEntry;
-
-import net.minecraft.loot.LootTables;
-
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +15,7 @@ public class SplittingSouls implements ModInitializer {
         LOGGER.info("Items Initialized!");
         SplittingSoulsItemGroups.initialize();
         LOGGER.info("Item Group Initialized");
-
+        ModLootTableModifiers.modifyLootTables();
 
     }
 }
