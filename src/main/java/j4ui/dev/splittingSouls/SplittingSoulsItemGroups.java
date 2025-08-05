@@ -18,6 +18,6 @@ public final class SplittingSoulsItemGroups {
             .build();
 
     public static void initialize() {
-        Registry.register(Registries.ITEM_GROUP, Identifier.of("splittingsouls", "splittingsouls_group"), ITEM_GROUP);
+        Registry.register(Registries.ITEM_GROUP, Identifier.of("splittingsouls", "splittingsouls_group"), SPLITTING_SOULS);
     }
 }

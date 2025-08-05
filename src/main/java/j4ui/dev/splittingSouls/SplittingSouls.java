@@ -17,8 +17,9 @@ public class SplittingSouls implements ModInitializer {
     @Override
     public void onInitialize() {
         ModItems.initialize();
-        LOGGER.info("Splitting Souls Items Initialized!");
-
+        LOGGER.info("Items Initialized!");
+        SplittingSoulsItemGroups.initialize();
+        LOGGER.info("Item Group Initialized");
 
 
     }
