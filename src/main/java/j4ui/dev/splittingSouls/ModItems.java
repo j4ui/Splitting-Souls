@@ -1,5 +1,6 @@
 package j4ui.dev.splittingSouls;
 
+import j4ui.dev.splittingSouls.item.PurityShardItem;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -18,7 +19,12 @@ public class ModItems{
 
     }
 
-    public static final Item PURITY_SHARD = register("purity_shard", Item::new, new Item.Settings());
+    // public static final Item PURITY_SHARD = register("purity_shard", Item::new, new Item.Settings());
+    public static final Item PURITY_SHARD = register(
+            "purity_shard",
+            PurityShardItem::new,
+            new Item.Settings().maxCount(16)
+    );
 
     public static Item register(String path, Function<Item.Settings, Item> factory, Item.Settings settings) {
         final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of("splittingsouls", path));
