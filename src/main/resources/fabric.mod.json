@@ -5,7 +5,9 @@
   "name": "Splitting Souls",
   "description": "",
   "authors": [],
-  "contact": {},
+  "contact": {
+    "sources": "https://github.com/j4ui/Splitting-souls"
+  },
   "license": "MIT",
   "icon": "assets/splitting-souls/icon.png",
   "environment": "*",
