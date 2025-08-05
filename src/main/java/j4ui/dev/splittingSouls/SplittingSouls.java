@@ -16,6 +16,7 @@ public class SplittingSouls implements ModInitializer {
         SplittingSoulsItemGroups.initialize();
         LOGGER.info("Item Group Initialized");
         ModLootTableModifiers.modifyLootTables();
+        LOGGER.info("Loot tables modified");
 
     }
 }

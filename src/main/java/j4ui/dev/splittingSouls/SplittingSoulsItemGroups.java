@@ -14,6 +14,11 @@ public final class SplittingSoulsItemGroups {
             .displayName(Text.translatable("itemGroup.splittingsouls.splittingsouls_group"))
             .entries((context, entries) -> {
                 entries.add(ModItems.PURITY_SHARD);
+                entries.add(ModItems.TINY_PURITY_SHARD);
+                entries.add(ModItems.SMALL_PURITY_SHARD);
+                entries.add(ModItems.MEDIUM_PURITY_SHARD);
+                entries.add(ModItems.LARGE_PURITY_SHARD);
+
             })
             .build();
 
