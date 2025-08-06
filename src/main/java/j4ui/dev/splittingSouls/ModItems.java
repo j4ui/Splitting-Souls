@@ -32,7 +32,7 @@ public class ModItems{
 
 
     public static Item register(String path, Function<Item.Settings, Item> factory, Item.Settings settings) {
-        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of("splittingsouls", path));
+        final RegistryKey<Item> registryKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(SplittingSouls.MOD_ID, path));
         return Items.register(registryKey, factory, settings);
     }
 

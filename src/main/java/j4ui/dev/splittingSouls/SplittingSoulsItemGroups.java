@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 public final class SplittingSoulsItemGroups {
     public static final ItemGroup SPLITTING_SOULS = FabricItemGroup.builder()
             .icon(() -> new ItemStack(ModItems.PURITY_SHARD))
-            .displayName(Text.translatable("itemGroup.splittingsouls.splittingsouls_group"))
+            .displayName(Text.translatable("itemGroup.splitting-souls.splitting_souls_group"))
             .entries((context, entries) -> {
                 entries.add(ModItems.PURITY_SHARD);
                 entries.add(ModItems.TINY_PURITY_SHARD);
@@ -23,6 +23,6 @@ public final class SplittingSoulsItemGroups {
             .build();
 
     public static void initialize() {
-        Registry.register(Registries.ITEM_GROUP, Identifier.of("splittingsouls", "splittingsouls_group"), SPLITTING_SOULS);
+        Registry.register(Registries.ITEM_GROUP, Identifier.of(SplittingSouls.MOD_ID, "splitting_souls_group"), SPLITTING_SOULS);
     }
 }

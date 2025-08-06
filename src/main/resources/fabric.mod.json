@@ -11,6 +11,7 @@
   "license": "MIT",
   "icon": "assets/splitting-souls/icon.png",
   "environment": "*",
+
   "entrypoints": {
     "fabric-datagen": [
       "j4ui.dev.splittingSouls.client.SplittingSoulsDataGenerator"
@@ -20,18 +21,21 @@
     ],
     "main": [
       "j4ui.dev.splittingSouls.SplittingSouls"
+    ],
+    "cardinal-components": [
+      "j4ui.dev.splittingSouls.component.ShardComponentInitializer"
     ]
   },
+
   "mixins": [
-    "splitting-souls.mixins.json",
-    {
-      "config": "splitting-souls.client.mixins.json",
-      "environment": "client"
-    }
+    "splitting-souls.mixins.json"
   ],
+
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version}",
+    "cardinal-components-base": "*",
+    "cardinal-components-entity": "*"
   }
 }
