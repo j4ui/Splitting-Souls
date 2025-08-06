@@ -1,6 +1,7 @@
 package j4ui.dev.splittingSouls;
 
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
+import net.minecraft.item.Item;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
@@ -9,23 +10,72 @@ import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
 
-
 public class ModLootTableModifiers {
-    private static final Identifier ANCIENT_CITY_ID
-            = Identifier.of("minecraft", "chests/ancient_city");
 
-    public static void modifyLootTables(){
-        LootTableEvents.MODIFY.register((key, tableBuilder, source, registry) ->{
-            if (ANCIENT_CITY_ID.equals(key.getValue())) {
-                LootPool.Builder poolBuilder = LootPool.builder()
-                        .rolls(ConstantLootNumberProvider.create(1))
-                        .conditionally(RandomChanceLootCondition.builder(1f))
-                        .with(ItemEntry.builder(ModItems.PURITY_SHARD))
-                        .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f, 2.0f)).build());
+    public static void modifyLootTables() {
+        LootTableEvents.MODIFY.register((key, tableBuilder, source, registry) -> {
+            Identifier id = key.getValue();
 
-                tableBuilder.pool(poolBuilder.build());
+            if (id.equals(Identifier.of("minecraft", "chests/ancient_city"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/shipwreck_treasure"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 2f, 3f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/jungle_temple"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/pillager_outpost"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/desert_pyramid"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 2f, 3f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/woodland_mansion"))) {
+                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/stronghold_library"))) {
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 2f, 3f);
+                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/bastion_treasure"))) {
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 2f, 2f);
+                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+            }
+
+            if (id.equals(Identifier.of("minecraft", "chests/end_city_treasure"))) {
+                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
             }
         });
+    }
 
+    private static void addShard(net.minecraft.loot.LootTable.Builder tableBuilder, Item item, float chance, float minCount, float maxCount) {
+        LootPool.Builder poolBuilder = LootPool.builder()
+                .rolls(ConstantLootNumberProvider.create(1))
+                .conditionally(RandomChanceLootCondition.builder(chance))
+                .with(ItemEntry.builder(item))
+                .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(minCount, maxCount)).build());
+        tableBuilder.pool(poolBuilder.build());
     }
 }

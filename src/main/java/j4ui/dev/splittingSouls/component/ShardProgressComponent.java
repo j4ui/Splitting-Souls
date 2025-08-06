@@ -8,3 +8,4 @@ public interface ShardProgressComponent extends Component {
     void addProgress(float amount);
     boolean canSplit();
 }
+// TODO: make shard progress persistent
