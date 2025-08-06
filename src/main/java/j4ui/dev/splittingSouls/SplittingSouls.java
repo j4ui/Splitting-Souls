@@ -18,7 +18,7 @@ public class SplittingSouls implements ModInitializer {
         LOGGER.info("Item Group Initialized");
         ModLootTableModifiers.modifyLootTables();
         LOGGER.info("Loot tables modified");
-
+        ShardComponentInitializer.getShardProgressKey();
 
     }
 }
