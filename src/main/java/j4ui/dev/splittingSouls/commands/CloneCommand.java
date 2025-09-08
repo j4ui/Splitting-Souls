@@ -14,27 +14,40 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
+import java.util.Set;
+
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class CloneCommand {
-    private static final int COUNTDOWN_SECONDS = 3;
+    private static final int COUNTDOWN_SECONDS = 1;
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         dispatcher.register(
-                literal("soulsplit")
+                literal("SplittingSouls")
                         .then(literal("create").executes(CloneCommand::createClone))
                         .then(literal("switch").executes(CloneCommand::startSwitchCountdown))
         );
     }
     private static int startSwitchCountdown(CommandContext<ServerCommandSource> context) {
         ServerPlayerEntity player = context.getSource().getPlayer();
+
         if (player == null) return 0;
 
-        PlayerCloneData cloneData = SplittingSouls.cloneDataManager.getOrCreate(player.getUuid());
+//---------------------------------------------------------------------------
+        ServerWorld world = context.getSource().getWorld();
+        PlayerCloneData cloneData = SplittingSouls.getManager(world).getOrCreate(player.getUuid());
         if (!cloneData.exists()) {
-            player.sendMessage(Text.literal("§cNo active soul clone!"), false);
+            player.sendMessage(Text.literal("§cNo active soul clone!"), true);
             return 0;
         }
+        World cloneWorld = cloneData.getWorld();
+        if (cloneWorld == null) {
+            player.sendMessage(Text.literal("§cYour soul clone's location is invalid!"), true);
+            return 0;
+        }
+//this (↑) is currently all kinds of bugged. will get back to at a later time
+
+
 
         // Start countdown
         scheduleTeleport(player, cloneData, COUNTDOWN_SECONDS);
@@ -84,22 +97,33 @@ public class CloneCommand {
         Vec3d playerPos = player.getPos();
         float playerYaw = player.getYaw();
         float playerPitch = player.getPitch();
-        ServerWorld playerWorld = (ServerWorld)player.getWorld();
 
-        // Teleport player
-        player.requestTeleport(
+
+        ServerWorld CloneWorld = (ServerWorld) cloneData.getWorld();
+        ServerWorld PlayerWorld = player.getWorld();
+        float cloneYaw = cloneData.getYaw();
+        float clonePitch = cloneData.getPitch();
+
+        player.teleport(
+                CloneWorld,
                 cloneData.getPosition().x,
                 cloneData.getPosition().y,
-                cloneData.getPosition().z
+                cloneData.getPosition().z,
+                Set.of(),
+                cloneYaw,
+                clonePitch,
+                false
         );
-        player.setYaw(cloneData.getYaw());
-        player.setPitch(cloneData.getPitch());
+
+
+        player.setYaw(cloneYaw);
+        player.setPitch(clonePitch);
 
         // Update clone with player's old position
         cloneData.setPosition(playerPos);
         cloneData.setYaw(playerYaw);
         cloneData.setPitch(playerPitch);
-        cloneData.setWorld(playerWorld);
+        cloneData.setWorld(PlayerWorld);
 
         player.sendMessage(Text.literal("§aSwitched places with your soul clone!"), true);
         player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -109,57 +133,19 @@ public class CloneCommand {
         ServerPlayerEntity player = context.getSource().getPlayer();
         if (player == null) return 0;
 
-        PlayerCloneData cloneData = SplittingSouls.cloneDataManager.getOrCreate(player.getUuid());
+        ServerWorld world = context.getSource().getWorld();
+
+        PlayerCloneData cloneData = new PlayerCloneData(player.getUuid().toString());
         cloneData.setPosition(player.getPos());
         cloneData.setYaw(player.getYaw());
         cloneData.setPitch(player.getPitch());
-        cloneData.setWorld(player.getWorld());
+        cloneData.setWorld(world);
         cloneData.setExists(true);
 
+
+
+        SplittingSouls.getManager(world).updateCloneData(player.getUuid(), cloneData);
         player.sendMessage(Text.of("Created a soul clone at your current position!"), true);
-        return Command.SINGLE_SUCCESS;
-    }
-
-    private static int switchWithClone(CommandContext<ServerCommandSource> context) {
-        ServerPlayerEntity player = context.getSource().getPlayer();
-        if (player == null) return 0;
-
-        PlayerCloneData cloneData = SplittingSouls.cloneDataManager.getOrCreate(player.getUuid());
-
-        // Check if clone exists and is in overworld
-        if (!cloneData.exists() || !cloneData.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
-            player.sendMessage(Text.literal("§cYour soul clone must be in the Overworld!"), false);
-            return 0;
-        }
-
-        // Check player is in overworld too
-        if (!player.getWorld().getRegistryKey().equals(World.OVERWORLD)) {
-            player.sendMessage(Text.literal("§cYou must be in the Overworld to switch!"), false);
-            return 0;
-        }
-
-        // Store current player data
-        Vec3d playerPos = player.getPos();
-        float playerYaw = player.getYaw();
-        float playerPitch = player.getPitch();
-
-        // Simple same-dimension teleport
-        player.requestTeleport(
-                cloneData.getPosition().x,
-                cloneData.getPosition().y,
-                cloneData.getPosition().z
-        );
-
-        // Set rotation
-        player.setYaw(cloneData.getYaw());
-        player.setPitch(cloneData.getPitch());
-
-        // Update clone with player's old position
-        cloneData.setPosition(playerPos);
-        cloneData.setYaw(playerYaw);
-        cloneData.setPitch(playerPitch);
-
-        player.sendMessage(Text.literal("§aSwitched places with your soul clone!"), false);
         return Command.SINGLE_SUCCESS;
     }
 }

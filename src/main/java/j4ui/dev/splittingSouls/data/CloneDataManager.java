@@ -1,10 +1,15 @@
 package j4ui.dev.splittingSouls.data;
 
 import com.google.gson.*;
-import net.fabricmc.loader.api.FabricLoader;
+import j4ui.dev.splittingSouls.SplittingSouls;
+
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.Vec3d;
 
+
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,8 +20,15 @@ public class CloneDataManager {
     private final Map<UUID, PlayerCloneData> cloneDataMap = new HashMap<>();
     private final Path dataFilePath;
 
-    public CloneDataManager() {
-        this.dataFilePath = FabricLoader.getInstance().getConfigDir().resolve(FILE_NAME);
+    public CloneDataManager(ServerWorld world) {
+        this.dataFilePath = world.getServer().getSavePath(WorldSavePath.ROOT)
+                .resolve("splitting_souls")
+                .resolve(FILE_NAME);
+        try {
+            Files.createDirectories(dataFilePath.getParent());
+        } catch (IOException e) {
+            SplittingSouls.LOGGER.error("Failed to create directories for clone data", e);
+        }
         loadData();
     }
 
@@ -30,29 +42,50 @@ public class CloneDataManager {
                 .setPrettyPrinting()
                 .create();
 
-        try (FileWriter writer = new FileWriter(dataFilePath.toFile())) {
+        try {
+            // First, load any existing data to preserve it
             JsonObject root = new JsonObject();
-
-            for (Map.Entry<UUID, PlayerCloneData> entry : cloneDataMap.entrySet()) {
-                if (!entry.getValue().exists()) continue;
-
-                JsonObject playerData = new JsonObject();
-                playerData.addProperty("world", entry.getValue().getWorld().getRegistryKey().getValue().toString());
-                playerData.add("position", gson.toJsonTree(entry.getValue().getPosition()));
-                playerData.addProperty("yaw", entry.getValue().getYaw());
-                playerData.addProperty("pitch", entry.getValue().getPitch());
-
-                root.add(entry.getKey().toString(), playerData);
+            if (dataFilePath.toFile().exists() && dataFilePath.toFile().length() > 0) {
+                try (FileReader reader = new FileReader(dataFilePath.toFile())) {
+                    JsonElement element = JsonParser.parseReader(reader);
+                    if (element != null && element.isJsonObject()) {
+                        root = element.getAsJsonObject();
+                    }
+                } catch (Exception e) {
+                    SplittingSouls.LOGGER.error("Error reading existing clone data", e);
+                }
             }
 
-            gson.toJson(root, writer);
+            // Update with current data
+            boolean hasData = false;
+            for (Map.Entry<UUID, PlayerCloneData> entry : cloneDataMap.entrySet()) {
+                PlayerCloneData data = entry.getValue();
+                if (data.exists() && data.getWorld() != null && data.getPosition() != null) {
+                    JsonObject playerData = new JsonObject();
+                    playerData.addProperty("world", data.getWorld().getRegistryKey().getValue().toString());
+                    playerData.add("position", gson.toJsonTree(data.getPosition()));
+                    playerData.addProperty("yaw", data.getYaw());
+                    playerData.addProperty("pitch", data.getPitch());
+                    root.add(entry.getKey().toString(), playerData);
+                    hasData = true;
+                }
+            }
+
+            // Only write if we have data
+            if (hasData || !root.isEmpty()) {
+                try (FileWriter writer = new FileWriter(dataFilePath.toFile())) {
+                    gson.toJson(root, writer);
+                }
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            SplittingSouls.LOGGER.error("Failed to save clone data", e);
         }
     }
 
     private void loadData() {
-        if (!dataFilePath.toFile().exists()) return;
+        if (!dataFilePath.toFile().exists() || dataFilePath.toFile().length() == 0) {
+            return;
+        }
 
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(Vec3d.class, new Vec3dDeserializer())
@@ -78,4 +111,9 @@ public class CloneDataManager {
             e.printStackTrace();
         }
     }
+    public void updateCloneData(UUID playerUuid, PlayerCloneData newData){
+        cloneDataMap.put(playerUuid, newData);
+        saveData();
+    }
+
 }
