@@ -17,55 +17,55 @@ public class ModLootTableModifiers {
             Identifier id = key.getValue();
 
             if (id.equals(Identifier.of("minecraft", "chests/ancient_city"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
-                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_CRYSTAL, 0.01f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/shipwreck_treasure"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 2f, 3f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.5f, 2f, 3f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/jungle_temple"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/pillager_outpost"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 2f);
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.5f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/desert_pyramid"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 2f, 3f);
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.5f, 2f, 3f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/woodland_mansion"))) {
-                addShard(tableBuilder, ModItems.TINY_PURITY_SHARD, 0.5f, 1f, 1f);
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
-                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.5f, 1f, 1f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_CRYSTAL, 0.01f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/stronghold_library"))) {
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 2f, 3f);
-                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 2f, 3f);
+                addShard(tableBuilder, ModItems.PURITY_CRYSTAL, 0.01f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/bastion_treasure"))) {
-                addShard(tableBuilder, ModItems.SMALL_PURITY_SHARD, 0.35f, 1f, 1f);
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 2f, 2f);
-                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+                addShard(tableBuilder, ModItems.PURITY_SHARD, 0.35f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 2f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_CRYSTAL, 0.01f, 1f, 1f);
             }
 
             if (id.equals(Identifier.of("minecraft", "chests/end_city_treasure"))) {
-                addShard(tableBuilder, ModItems.MEDIUM_PURITY_SHARD, 0.125f, 1f, 2f);
-                addShard(tableBuilder, ModItems.LARGE_PURITY_SHARD, 0.01f, 1f, 1f);
+                addShard(tableBuilder, ModItems.SMALL_PURITY_CRYSTAL, 0.125f, 1f, 2f);
+                addShard(tableBuilder, ModItems.PURITY_CRYSTAL, 0.01f, 1f, 1f);
             }
         });
     }

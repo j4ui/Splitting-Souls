@@ -9,8 +9,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class LargePurityShardItem extends Item {
-    public LargePurityShardItem(Settings settings) {
+public class PurityCrystalItem extends Item {
+    public PurityCrystalItem(Settings settings) {
         super(settings);
     }
 
