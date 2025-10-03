@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "splitting-souls:item/purity_shard"
+    "layer0": "splitting-souls:item/purity_crystal"
   }
 }

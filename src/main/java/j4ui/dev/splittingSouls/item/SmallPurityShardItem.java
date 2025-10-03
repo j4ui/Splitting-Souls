@@ -25,7 +25,7 @@ public class SmallPurityShardItem extends Item {
 
             // 🔧 Add progress via component
             ShardProgressComponent component = ShardComponentInitializer.SHARD_PROGRESS.get(player);
-            component.addProgress(1.0f / 16); // small shard
+            component.addProgress(1.0f / 64); // tiny shard = 1/64 of a large
             System.out.println("Shard progress: " + component.getProgress());
 
             // You can optionally check for unlock here:

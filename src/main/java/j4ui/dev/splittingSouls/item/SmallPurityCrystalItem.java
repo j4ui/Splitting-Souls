@@ -9,8 +9,8 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class TinyPurityShardItem extends Item {
-    public TinyPurityShardItem(Settings settings) {
+public class SmallPurityCrystalItem extends Item {
+    public SmallPurityCrystalItem(Settings settings) {
         super(settings);
     }
 
@@ -25,7 +25,7 @@ public class TinyPurityShardItem extends Item {
 
             // 🔧 Add progress via component
             ShardProgressComponent component = ShardComponentInitializer.SHARD_PROGRESS.get(player);
-            component.addProgress(1.0f / 64); // tiny shard = 1/64 of a large
+            component.addProgress(1.0f / 4); // medium shard
             System.out.println("Shard progress: " + component.getProgress());
 
             // You can optionally check for unlock here:
