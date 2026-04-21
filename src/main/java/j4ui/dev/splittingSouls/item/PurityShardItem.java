@@ -1,7 +1,7 @@
 package j4ui.dev.splittingSouls.item;
 
-import j4ui.dev.splittingSouls.component.ShardComponentInitializer;
-import j4ui.dev.splittingSouls.component.ShardProgressComponent;
+import j4ui.dev.splittingSouls.SplittingSouls;
+import j4ui.dev.splittingSouls.data.ShardProgressManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,15 +23,10 @@ public class PurityShardItem extends Item {
                 stack.decrement(1);
             }
 
-            // 🔧 Add progress via component
-            ShardProgressComponent component = ShardComponentInitializer.SHARD_PROGRESS.get(player);
-            component.addProgress(1.0f / 16); // small shard
-            System.out.println("Shard progress: " + component.getProgress());
+            ShardProgressManager manager = SplittingSouls.shardProgressManager;
+            manager.addProgress(player.getUuid(), 1.0f / 16);
+            System.out.println("Shard progress: " + manager.getProgress(player.getUuid()));
 
-            // You can optionally check for unlock here:
-            if (component.canSplit()) {
-                System.out.println("Soul splitting unlocked!");
-            }
         }
 
         return ActionResult.SUCCESS;
