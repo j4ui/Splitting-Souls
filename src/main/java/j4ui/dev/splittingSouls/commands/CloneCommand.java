@@ -34,8 +34,7 @@ public class CloneCommand {
         if (player == null) return 0;
 
 //---------------------------------------------------------------------------
-        ServerWorld world = context.getSource().getWorld();
-        PlayerCloneData cloneData = SplittingSouls.getManager(world).getOrCreate(player.getUuid());
+        PlayerCloneData cloneData = SplittingSouls.getManager().getOrCreate(player.getUuid());
         if (!cloneData.exists()) {
             player.sendMessage(Text.literal("§cNo active soul clone!"), true);
             return 0;
@@ -45,9 +44,6 @@ public class CloneCommand {
             player.sendMessage(Text.literal("§cYour soul clone's location is invalid!"), true);
             return 0;
         }
-//this (↑) is currently all kinds of bugged. will get back to at a later time
-
-
 
         // Start countdown
         scheduleTeleport(player, cloneData, COUNTDOWN_SECONDS);
@@ -127,6 +123,8 @@ public class CloneCommand {
 
         player.sendMessage(Text.literal("§aSwitched places with your soul clone!"), true);
         player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+
+        SplittingSouls.getManager().saveData();
     }
 
     private static int createClone(CommandContext<ServerCommandSource> context) {
@@ -144,7 +142,7 @@ public class CloneCommand {
 
 
 
-        SplittingSouls.getManager(world).updateCloneData(player.getUuid(), cloneData);
+        SplittingSouls.getManager().updateCloneData(player.getUuid(), cloneData);
         player.sendMessage(Text.of("Created a soul clone at your current position!"), true);
         return Command.SINGLE_SUCCESS;
     }
