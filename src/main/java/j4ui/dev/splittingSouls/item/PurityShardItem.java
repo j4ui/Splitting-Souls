@@ -27,9 +27,6 @@ public class PurityShardItem extends Item {
             manager.addProgress(player.getUuid(), 1.0f / 16);
             System.out.println("Shard progress: " + manager.getProgress(player.getUuid()));
 
-            if (manager.canSplit(player.getUuid())) {
-                System.out.println("Soul splitting unlocked!");
-            }
         }
 
         return ActionResult.SUCCESS;
