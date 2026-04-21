@@ -21,9 +21,6 @@
     ],
     "main": [
       "j4ui.dev.splittingSouls.SplittingSouls"
-    ],
-    "cardinal-components": [
-      "j4ui.dev.splittingSouls.component.ShardComponentInitializer"
     ]
   },
 
@@ -34,14 +31,6 @@
   "depends": {
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}",
-    "cardinal-components-base": "*",
-    "cardinal-components-entity": "*"
-  },
-
-  "custom": {
-    "cardinal-components": [
-      "splitting-souls:shard_progress"
-    ]
+    "minecraft": "${minecraft_version}"
   }
 }
