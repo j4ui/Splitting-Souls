@@ -3,9 +3,14 @@ package j4ui.dev.splittingSouls.data;
 import com.google.gson.*;
 import j4ui.dev.splittingSouls.SplittingSouls;
 
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.WorldSavePath;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 
 import java.io.*;
@@ -19,9 +24,11 @@ public class CloneDataManager {
     private static final String FILE_NAME = "player_clones.json";
     private final Map<UUID, PlayerCloneData> cloneDataMap = new HashMap<>();
     private final Path dataFilePath;
+    private final MinecraftServer server;
 
-    public CloneDataManager(ServerWorld world) {
-        this.dataFilePath = world.getServer().getSavePath(WorldSavePath.ROOT)
+    public CloneDataManager(MinecraftServer server) {
+        this.server = server;
+        this.dataFilePath = server.getSavePath(WorldSavePath.ROOT)
                 .resolve("splitting_souls")
                 .resolve(FILE_NAME);
         try {
@@ -102,7 +109,12 @@ public class CloneDataManager {
                 cloneData.setPosition(gson.fromJson(playerData.get("position"), Vec3d.class));
                 cloneData.setYaw(playerData.get("yaw").getAsFloat());
                 cloneData.setPitch(playerData.get("pitch").getAsFloat());
-                // Note: World will need to be set when the player logs in
+
+                String worldStr = playerData.get("world").getAsString();
+                RegistryKey<World> worldKey = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(worldStr));
+                ServerWorld world = server.getWorld(worldKey);
+                cloneData.setWorld(world);
+
                 cloneData.setExists(true);
 
                 cloneDataMap.put(uuid, cloneData);
