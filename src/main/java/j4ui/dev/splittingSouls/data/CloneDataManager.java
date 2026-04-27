@@ -73,6 +73,9 @@ public class CloneDataManager {
                     playerData.add("position", gson.toJsonTree(data.getPosition()));
                     playerData.addProperty("yaw", data.getYaw());
                     playerData.addProperty("pitch", data.getPitch());
+                    if (data.getEntityUUID() != null) {
+                        playerData.addProperty("entityUUID", data.getEntityUUID().toString());
+                    }
                     root.add(entry.getKey().toString(), playerData);
                     hasData = true;
                 }
@@ -115,6 +118,9 @@ public class CloneDataManager {
                 ServerWorld world = server.getWorld(worldKey);
                 cloneData.setWorld(world);
 
+                if (playerData.has("entityUUID")) {
+                    cloneData.setEntityUUID(UUID.fromString(playerData.get("entityUUID").getAsString()));
+                }
                 cloneData.setExists(true);
 
                 cloneDataMap.put(uuid, cloneData);
@@ -123,9 +129,13 @@ public class CloneDataManager {
             e.printStackTrace();
         }
     }
-    public void updateCloneData(UUID playerUuid, PlayerCloneData newData){
+    public void updateCloneData(UUID playerUuid, PlayerCloneData newData) {
         cloneDataMap.put(playerUuid, newData);
         saveData();
     }
 
+    public void clearClone(UUID playerUuid) {
+        cloneDataMap.remove(playerUuid);
+        saveData();
+    }
 }

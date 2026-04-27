@@ -10,6 +10,7 @@ public class PlayerCloneData {
     private float pitch;
     private World world;
     private boolean exists;
+    private java.util.UUID entityUUID;
 
     public PlayerCloneData(String playerUuid) {
         this.playerUuid = playerUuid;
@@ -61,4 +62,11 @@ public class PlayerCloneData {
         this.exists = exists;
     }
 
+    public java.util.UUID getEntityUUID() {
+        return entityUUID;
+    }
+
+    public void setEntityUUID(java.util.UUID entityUUID) {
+        this.entityUUID = entityUUID;
+    }
 }

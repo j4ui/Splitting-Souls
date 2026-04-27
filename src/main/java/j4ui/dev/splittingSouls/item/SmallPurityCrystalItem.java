@@ -5,6 +5,7 @@ import j4ui.dev.splittingSouls.data.ShardProgressManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
@@ -24,11 +25,10 @@ public class SmallPurityCrystalItem extends Item {
             }
 
             ShardProgressManager manager = SplittingSouls.shardProgressManager;
+            boolean wasSplit = manager.canSplit(player.getUuid());
             manager.addProgress(player.getUuid(), 1.0f / 4);
-            System.out.println("Shard progress: " + manager.getProgress(player.getUuid()));
-
-            if (manager.canSplit(player.getUuid())) {
-                System.out.println("Soul splitting unlocked!");
+            if (!wasSplit && manager.canSplit(player.getUuid())) {
+                player.sendMessage(Text.literal("§bYour soul is ready to split!"), true);
             }
         }
 
