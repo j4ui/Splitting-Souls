@@ -6,6 +6,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import j4ui.dev.splittingSouls.SplittingSouls;
 import j4ui.dev.splittingSouls.data.PlayerCloneData;
+import j4ui.dev.splittingSouls.entity.SoulCloneEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -88,38 +89,43 @@ public class CloneCommand {
 
     }
 
-    private static void performTeleport(ServerPlayerEntity player, PlayerCloneData cloneData) {
-        // Store current player data
+    public static void performTeleport(ServerPlayerEntity player, PlayerCloneData cloneData) {
         Vec3d playerPos = player.getPos();
         float playerYaw = player.getYaw();
         float playerPitch = player.getPitch();
+        ServerWorld playerWorld = player.getWorld();
 
-
-        ServerWorld CloneWorld = (ServerWorld) cloneData.getWorld();
-        ServerWorld PlayerWorld = player.getWorld();
+        ServerWorld cloneWorld = (ServerWorld) cloneData.getWorld();
+        Vec3d clonePos = cloneData.getPosition();
         float cloneYaw = cloneData.getYaw();
         float clonePitch = cloneData.getPitch();
 
-        player.teleport(
-                CloneWorld,
-                cloneData.getPosition().x,
-                cloneData.getPosition().y,
-                cloneData.getPosition().z,
-                Set.of(),
-                cloneYaw,
-                clonePitch,
-                false
-        );
+        // Use entity's actual position (may have shifted from knockback)
+        java.util.UUID entityUUID = cloneData.getEntityUUID();
+        SoulCloneEntity cloneEntity = null;
+        if (entityUUID != null && cloneWorld != null) {
+            net.minecraft.entity.Entity found = cloneWorld.getEntity(entityUUID);
+            if (found instanceof SoulCloneEntity sce) {
+                cloneEntity = sce;
+                clonePos = sce.getPos();
+                cloneYaw = sce.getYaw();
+                clonePitch = sce.getPitch();
+            }
+        }
 
-
+        player.teleport(cloneWorld, clonePos.x, clonePos.y, clonePos.z, Set.of(), cloneYaw, clonePitch, false);
         player.setYaw(cloneYaw);
         player.setPitch(clonePitch);
 
-        // Update clone with player's old position
+        // Move entity to player's old position
+        if (cloneEntity != null) {
+            cloneEntity.refreshPositionAndAngles(playerPos.x, playerPos.y, playerPos.z, playerYaw, playerPitch);
+        }
+
         cloneData.setPosition(playerPos);
         cloneData.setYaw(playerYaw);
         cloneData.setPitch(playerPitch);
-        cloneData.setWorld(PlayerWorld);
+        cloneData.setWorld(playerWorld);
 
         player.sendMessage(Text.literal("§aSwitched places with your soul clone!"), true);
         player.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
